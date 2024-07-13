@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+
+{% block body %}
+<div class="search-container">
+    <h1>YouTube TopN</h1>
+    <br>
+    <h2>Search for the best videos on a Youtube channel by each year, quarter, month, or week.</h2>
+    <br>
+    <br>
+    <br>
+
+        <form method="POST">
+            <label for="search">Enter channel name</label>
+            <div class="search-box">
+                <input type="text" id="search" name="search" placeholder="Example: The Slow Mo Guys" required>
+                <button type="submit">Search</button>
+            </div>
+        </form>
+</div>
+{% endblock %}
