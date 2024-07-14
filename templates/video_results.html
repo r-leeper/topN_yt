@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Video Results{% endblock %}
+
+{% block body %}
+    <div class="results-container">
+        <h1>Video Results for "{{ title }}"</h1>
+
+        <!-- Search Options Box -->
+            <form id="search-form" action="/search" method="GET">
+                <div class="form-group">
+                    <label>Dates:</label><br>
+                    <input type="radio" id="all-time" name="date_option" value="all-time" checked onclick="toggleDateSelectors()"> All-time<br>
+                    <input type="radio" id="specific-date" name="date_option" value="specific-date" onclick="toggleDateSelectors()"> Specific Date
+                </div>
+                <div class="form-group">
+                    <label for="from-date">From:</label>
+                    <input type="date" id="from-date" name="from_date" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="to-date">To:</label>
+                    <input type="date" id="to-date" name="to_date" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="for-each">For Each:</label>
+                    <select id="for-each" name="for_each">
+                        <option value="year">Year</option>
+                        <option value="quarter">Quarter</option>
+                        <option value="month">Month</option>
+                        <option value="week">Week</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="top">Top:</label>
+                    <select id="top" name="top">
+                        {% for i in range(1, 21) %}
+                            <option value="{{ i }}">Top {{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Sort:</label><br>
+                    <input type="radio" id="newest" name="sort_option" value="newest" checked> Newest to Oldest<br>
+                    <input type="radio" id="oldest" name="sort_option" value="oldest"> Oldest to Newest
+                </div>
+                <button type="submit">Search / Update</button>
+            </form>
+        <!-- Video Results Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for video in videos %}
+                    <tr>
+                        <td>{{ video.title }}</td>
+                        <td>{{ video.description }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+    // Function to toggle date selectors
+function toggleDateSelectors() {
+  var allTimeRadio = document.getElementById('all-time');
+  var fromDateInput = document.getElementById('from-date');
+  var toDateInput = document.getElementById('to-date');
+
+  if (allTimeRadio.checked) {
+    fromDateInput.disabled = true;
+    toDateInput.disabled = true;
+  } else {
+    fromDateInput.disabled = false;
+    toDateInput.disabled = false;
+  }
+}
+
+// Event listener for DOMContentLoaded (no changes)
+document.addEventListener('DOMContentLoaded', function() {
+  toggleDateSelectors();
+});
+
+</script>
+
+{% endblock %}

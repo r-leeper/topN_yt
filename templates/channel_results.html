@@ -1,12 +1,25 @@
 {% extends 'base.html' %}
 
-{% block head %}
-
-{% endblock %}
-
+{% block title %}Search Results{% endblock %}
 
 {% block body %}
     <div class="results-container">
         <h1>Search Results for "{{ query }}"</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td><a href="{{ url_for('video_search', title=result.title) }}">{{ result.title }}</a></td>
+                        <td>{{ result.description }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

@@ -5,9 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
-      {% block head %}{% endblock %}
+    {% block head %}{% endblock %}
   </head>
   <body>
-    {% block body %}{% endblock %}
+    <header>
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('channel_search') }}">Channel Search</a></li>
+          <li><a href="{{ url_for('faqs') }}">FAQs</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      {% block body %}{% endblock %}
+      <br>
+      <br>
+      <br>
+    </main>
+    <footer>
+      Made with Flask and YouTube Data API
+    </footer>
+
+    {% block scripts %}
+        <!-- JavaScript code -->
+    {% endblock %}
   </body>
 </html>

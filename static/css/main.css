@@ -10,8 +10,9 @@ body {
 
 header {
     background-color: #444;
-    padding: 10px;
+    padding: 10px 20px;
     border-bottom: 1px solid #555;
+    text-align: left; /* Align text to the left */
 }
 
 nav ul {
@@ -22,7 +23,7 @@ nav ul {
 
 nav ul li {
     display: inline;
-    margin-right: 10px;
+    margin-right: 20px;
 }
 
 nav ul li a {
@@ -45,11 +46,13 @@ footer {
     text-align: center;
 }
 
-.search-container {
+/* Additional styles for the search and results containers, if needed */
+
+.search-container, .results-container {
     margin-top: 50px;
 }
 
-.search-container h1 {
+.search-container h1, .results-container h1 {
     margin-bottom: 10px;
 }
 
@@ -58,7 +61,7 @@ footer {
     font-weight: normal;
 }
 
-.search-container form {
+.search-container form, .results-container {
     display: inline-block;
     text-align: left;
 }
@@ -98,6 +101,51 @@ footer {
     background-color: #666;
 }
 
+.results-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.results-container th, .results-container td {
+    border: 1px solid #555;
+    padding: 10px;
+    text-align: left;
+}
+
+.results-container th {
+    background-color: #444;
+}
+
+.results-container td {
+    background-color: #333;
+}
+
+.results-container tr:nth-child(even) td {
+    background-color: #3b3b3b;
+}
+
+.results-container tr:hover td {
+    background-color: #555;
+}
+
+/* Styles for the titles and descriptions */
+.results-container a {
+    color: #fff;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+
+.results-container a:hover {
+    text-decoration: underline;
+}
+
+.results-container td:nth-child(2) {
+    color: #ddd;
+    font-size: 0.9em;
+}
+
+/* Responsive styles */
 @media (max-width: 600px) {
     .search-box {
         flex-direction: column;
@@ -114,3 +162,24 @@ footer {
         margin-bottom: 0;
     }
 }
+
+<style>
+    .search-options {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .form-group {
+        margin-bottom: 10px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+    .form-group input[type="radio"],
+    .form-group input[type="date"],
+    .form-group select {
+        margin-right: 10px;
+    }
+</style>
