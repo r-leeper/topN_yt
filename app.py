@@ -6,15 +6,15 @@ app = Flask(__name__)
 @app.route('/', methods=['GET', 'POST'])
 def channel_search():
     if request.method == 'POST':
-        search_query = request.form['search']
+        channel_search_query = request.form['search']
         # Process the search query here
         # For now, redirect to the results page with the query as a parameter
-        return redirect(url_for('search_results', query=search_query))
+        return redirect(url_for('channel_results', query=channel_search_query))
     return render_template('channel_search.html')
 
 
-@app.route('/results')
-def search_results():
+@app.route('/channel_results')
+def channel_results():
     query = request.args.get('query')
     # Perform the search and get results
     # For demonstration, we'll use a placeholder list of results
