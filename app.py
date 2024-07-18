@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -39,11 +40,12 @@ def video_search():
     sort_option = request.args.get('sort_option', 'newest')
 
     # Logic to filter videos based on search options
-    # For demonstration, using static video list
-    videos = [{'title': 'Sample Video 1', 'description': 'Description 1'},
-              {'title': 'Sample Video 2', 'description': 'Description 2'}]
+    # For testing, using static video list from file
+    file_path = 'mock_data/youtube_videos.csv'
+    videos_df = pd.read_csv(file_path, sep='~', usecols=['title', 'view_count'], nrows=50)
+    results_html = videos_df.to_html(escape=False, index=False)
 
-    return render_template('video_results.html', title=title, videos=videos)
+    return render_template('video_results.html', title=title, video_results=results_html)
 
 
 @app.route('/faqs')

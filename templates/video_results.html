@@ -46,22 +46,13 @@
                 <button type="submit">Search / Update</button>
             </form>
         <!-- Video Results Table -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for video in videos %}
-                    <tr>
-                        <td>{{ video.title }}</td>
-                        <td>{{ video.description }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <!-- results will come from converted dataframe -->
+        {% if video_results %}
+            <div>
+                <h2>Search Results</h2>
+                {{ video_results | safe }}
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}
