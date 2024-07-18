@@ -7,7 +7,7 @@
         <h1>Video Results for "{{ title }}"</h1>
 
         <!-- Search Options Box -->
-            <form id="search-form" action="/search" method="GET">
+            <form id="video-search-form" action="/search" method="GET">
                 <div class="form-group">
                     <label>Dates:</label><br>
                     <input type="radio" id="all-time" name="date_option" value="all-time" checked onclick="toggleDateSelectors()"> All-time<br>
@@ -47,12 +47,41 @@
             </form>
         <!-- Video Results Table -->
         <!-- results will come from converted dataframe -->
-        {% if video_results %}
-            <div>
-                <h2>Search Results</h2>
-                {{ video_results | safe }}
-            </div>
-        {% endif %}
+        <div id="results"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#video-search-form').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form data
+            var formData = {
+                'title': $('#title').val(),
+                'date_option': $('#date_option').val(),
+                'from_date': $('#from_date').val() || '',
+                'to_date': $('#to_date').val() || '',
+                'for_each': $('#for_each').val(),
+                'top': $('#top').val(),
+                'sort_option': $('#sort_option').val()
+            };
+
+            // Send form data to server using AJAX
+            $.ajax({
+                type: 'POST',
+                url: '/video_search',
+                data: formData,
+                success: function(response) {
+                    // Update results section with returned HTML
+                    $('#results').html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', status, error);
+                }
+            });
+        });
+    });
+</script>
     </div>
 
 {% endblock %}

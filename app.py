@@ -29,23 +29,26 @@ def channel_results():
     return render_template('channel_results.html', query=query, results=results)
 
 
-@app.route('/video_search', methods=['GET'])
+@app.route('/video_search', methods=['GET', 'POST'])
 def video_search():
-    title = request.args.get('title', 'Default Title')
-    date_option = request.args.get('date_option', 'all-time')
-    from_date = request.args.get('from_date', '')
-    to_date = request.args.get('to_date', '')
-    for_each = request.args.get('for_each', 'year')
-    top = request.args.get('top', '1')
-    sort_option = request.args.get('sort_option', 'newest')
+    if request.method == 'POST':
+        title = request.args.get('title', 'Default Title')
+        date_option = request.args.get('date_option', 'all-time')
+        from_date = request.args.get('from_date', '')
+        to_date = request.args.get('to_date', '')
+        for_each = request.args.get('for_each', 'year')
+        top = request.args.get('top', '1')
+        sort_option = request.args.get('sort_option', 'newest')
 
-    # Logic to filter videos based on search options
-    # For testing, using static video list from file
-    file_path = 'mock_data/youtube_videos.csv'
-    videos_df = pd.read_csv(file_path, sep='~', usecols=['title', 'view_count'], nrows=50)
-    results_html = videos_df.to_html(escape=False, index=False)
+        # Logic to filter videos based on search options
+        # For testing, using static video list from file
+        file_path = 'mock_data/youtube_videos.csv'
+        videos_df = pd.read_csv(file_path, sep='~', usecols=['title', 'view_count'], nrows=50)
+        results_html = videos_df.to_html(escape=False, index=False)
 
-    return render_template('video_results.html', title=title, video_results=results_html)
+        return results_html
+
+    return render_template('video_results.html')
 
 
 @app.route('/faqs')
