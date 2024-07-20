@@ -122,17 +122,21 @@
 
     // Function to toggle date selectors
 function toggleDateSelectors() {
-  var allTimeRadio = document.getElementById('all-time');
-  var fromDateInput = document.getElementById('from-date');
-  var toDateInput = document.getElementById('to-date');
+    var allTimeRadio = document.getElementById('all-time');
+    var fromDateInput = document.getElementById('from-date');
+    var toDateInput = document.getElementById('to-date');
 
-  if (allTimeRadio.checked) {
-    fromDateInput.disabled = true;
-    toDateInput.disabled = true;
-  } else {
-    fromDateInput.disabled = false;
-    toDateInput.disabled = false;
-  }
+    if (allTimeRadio.checked) {
+        fromDateInput.disabled = true;
+        fromDateInput.required = false;
+        toDateInput.disabled = true;
+        toDateInput.required = false;
+    } else {
+        fromDateInput.disabled = false;
+        fromDateInput.required = true;
+        toDateInput.disabled = false;
+        toDateInput.required = true;
+    }
 }
 
 // Event listener for DOMContentLoaded (no changes)
