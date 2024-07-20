@@ -8,49 +8,59 @@
 
         <!-- Search Options Box -->
             <form id="video-search-form" action="/search" method="GET">
-                <div class="form-group">
-                    <label>Dates:</label><br>
-                    <input type="radio" id="all-time" name="date_option" value="all-time" checked onclick="toggleDateSelectors()"> All-time<br>
-                    <input type="radio" id="specific-date" name="date_option" value="specific-date" onclick="toggleDateSelectors()"> Specific Date
+                <div class="search-options">
+                    <div class="search-options-group">
+                        <div class="form-group">
+                            <label>Dates:</label><br>
+                            <input type="radio" id="all-time" name="date_option" value="all-time" checked onclick="toggleDateSelectors()"> All-time<br>
+                            <input type="radio" id="specific-date" name="date_option" value="specific-date" onclick="toggleDateSelectors()"> Specific Date
+                        </div>
+                        <div class="form-group">
+                            <label for="from-date">From:</label>
+                            <input type="date" id="from-date" name="from_date" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="to-date">To:</label>
+                            <input type="date" id="to-date" name="to_date" disabled>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="from-date">From:</label>
-                    <input type="date" id="from-date" name="from_date" disabled>
+
+                <div class="search-options">
+                    <div class="search-options-group">
+                        <div class="form-group">
+                            <label for="for-each">For Each:</label>
+                            <select id="for-each" name="for_each">
+                                <option value="year">Year</option>
+                                <option value="quarter">Quarter</option>
+                                <option value="month">Month</option>
+                                <option value="week">Week</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="top">Top:</label>
+                            <select id="top" name="top">
+                                {% for i in range(1, 21) %}
+                                    <option value="{{ i }}">Top {{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sort:</label><br>
+                            <input type="radio" id="newest" name="sort_option" value="newest" checked> Newest to Oldest<br>
+                            <input type="radio" id="oldest" name="sort_option" value="oldest"> Oldest to Newest
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="to-date">To:</label>
-                    <input type="date" id="to-date" name="to_date" disabled>
-                </div>
-                <div class="form-group">
-                    <label for="for-each">For Each:</label>
-                    <select id="for-each" name="for_each">
-                        <option value="year">Year</option>
-                        <option value="quarter">Quarter</option>
-                        <option value="month">Month</option>
-                        <option value="week">Week</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="top">Top:</label>
-                    <select id="top" name="top">
-                        {% for i in range(1, 21) %}
-                            <option value="{{ i }}">Top {{ i }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Sort:</label><br>
-                    <input type="radio" id="newest" name="sort_option" value="newest" checked> Newest to Oldest<br>
-                    <input type="radio" id="oldest" name="sort_option" value="oldest"> Oldest to Newest
-                </div>
-                <button type="submit">Search / Update</button>
+
+                <button id="search-update-button" type="submit">Search / Update</button>
             </form>
-        <div class="email-form">
-            <form id="email-form">
-                <input type="email" id="user-email" name="email" placeholder="Enter your email" required>
-                <button type="submit">Send Results</button>
-            </form>
+
+        <div id="email-form" class="email-form">
+            <input type="email" id="user-email" name="email" placeholder="Enter your email" required>
+            <button type="button">Send Results</button>
         </div>
+
         <!-- Video Results Table -->
         <!-- results will come from converted dataframe -->
         <div id="results"></div>
@@ -64,6 +74,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
+        // Handle search form submission
         $('#video-search-form').submit(function(event) {
             event.preventDefault(); // Prevent default form submission
 
@@ -78,7 +89,7 @@
                 'sort_option': $('input[name="sort_option"]:checked').val()
             };
 
-            console.log(formData)
+            console.log(formData);
 
             // Send form data to server using AJAX
             $.ajax({
@@ -94,31 +105,29 @@
                 }
             });
         });
-    });
-</script>
 
-<script>
-    // Handle email form submission
-            $('#email-form').submit(function(event) {
-                event.preventDefault(); // Prevent default form submission
+        // Handle email form submission
+        $('#email-form').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
 
-                // Get email input value
-                var email = $('#user-email').val();
+            // Get email input value
+            var email = $('#user-email').val();
 
-                // Send email to server using AJAX
-                $.ajax({
-                    type: 'POST',
-                    url: '/send_email',
-                    data: { email: email },
-                    success: function(response) {
-                        alert('Email sent successfully!');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', status, error);
-                        alert('Failed to send email.');
-                    }
-                });
+            // Send email to server using AJAX
+            $.ajax({
+                type: 'POST',
+                url: '/send_email',
+                data: { email: email },
+                success: function(response) {
+                    alert('Email sent successfully!');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', status, error);
+                    alert('Failed to send email.');
+                }
             });
+        });
+    });
 
     // Function to toggle date selectors
 function toggleDateSelectors() {

@@ -1,3 +1,4 @@
+/* Existing styles */
 body {
     background-color: #333;
     color: #fff;
@@ -12,7 +13,7 @@ header {
     background-color: #444;
     padding: 10px 20px;
     border-bottom: 1px solid #555;
-    text-align: left; /* Align text to the left */
+    text-align: left;
 }
 
 nav ul {
@@ -163,33 +164,115 @@ footer {
     }
 }
 
-<style>
-    .search-options {
-        margin-bottom: 20px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    .form-group {
-        margin-bottom: 10px;
-    }
-    .form-group label {
-        display: block;
-        margin-bottom: 5px;
-    }
-    .form-group input[type="radio"],
-    .form-group input[type="date"],
-    .form-group select {
-        margin-right: 10px;
-    }
-            .email-form {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .email-form input[type="email"] {
-            padding: 5px;
-            margin-right: 10px;
-        }
-</style>
+/* New styles for search options */
+.search-options {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #444;
+}
+
+.search-options-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.search-options-group .form-group {
+    margin: 0 10px;
+}
+
+.email-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #000;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.email-form input[type="email"] {
+    padding: 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    width: calc(100% - 130px); /* Adjust the width to account for button width */
+}
+
+.email-form input[type="email"]::placeholder {
+    color: #aaa;
+}
+
+.email-form button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #555;
+    color: #fff;
+    cursor: pointer;
+    width: 110px; /* Fixed width for the button */
+}
+
+.email-form button:hover {
+    background-color: #666;
+}
+
+/* Centering and enlarging the "Search / Update" button */
+#search-update-button {
+    display: block;
+    margin: 20px auto;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#search-update-button:hover {
+    background-color: #666;
+}
+/* Style for the email form container */
+.email-form {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    padding: 20px; /* Add padding for spacing */
+    border-radius: 5px; /* Rounded corners */
+    width: 100%; /* Full width of its container */
+    max-width: 500px; /* Limit maximum width */
+    margin: 0 auto; /* Center horizontally */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Style for the email input field */
+.email-form input[type="email"] {
+    width: calc(100% - 120px); /* Full width minus space for the button */
+    padding: 10px;
+    border: 1px solid #444; /* Dark border */
+    border-radius: 5px; /* Rounded corners */
+    margin-right: 10px; /* Space between input and button */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Style for the submit button */
+.email-form button {
+    width: 100px; /* Fixed width for the button */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #555; /* Dark background */
+    color: #fff; /* White text */
+    cursor: pointer;
+}
+
+.email-form button:hover {
+    background-color: #666; /* Slightly lighter on hover */
+}
