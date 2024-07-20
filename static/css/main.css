@@ -182,4 +182,14 @@ footer {
     .form-group select {
         margin-right: 10px;
     }
+            .email-form {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .email-form input[type="email"] {
+            padding: 5px;
+            margin-right: 10px;
+        }
 </style>

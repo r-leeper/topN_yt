@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import pandas as pd
 
 app = Flask(__name__)
@@ -48,12 +48,27 @@ def video_search():
 
         return results_html
 
-    return render_template('video_results.html')
+    return render_template('video_results.html', title=request.args.get('title', 'Default Title'))
 
 
 @app.route('/faqs')
 def faqs():
     return render_template('faqs.html')
+
+@app.route('/send_email', methods=['POST'])
+def send_email():
+    email = request.form.get('email')
+    if email:
+        # Call your function to send the email with the dataframe
+        send_email_with_results(email)
+        return jsonify({'message': 'Email sent successfully!'})
+    return jsonify({'error': 'Email is required.'}), 400
+
+
+def send_email_with_results(email):
+    # This function should handle sending the email with the dataframe
+    # You need to implement this function yourself
+    print(f"Sending email to {email} with the results...")
 
 
 if __name__ == '__main__':

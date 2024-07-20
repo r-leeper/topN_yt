@@ -45,9 +45,21 @@
                 </div>
                 <button type="submit">Search / Update</button>
             </form>
+        <div class="email-form">
+            <form id="email-form">
+                <input type="email" id="user-email" name="email" placeholder="Enter your email" required>
+                <button type="submit">Send Results</button>
+            </form>
+        </div>
         <!-- Video Results Table -->
         <!-- results will come from converted dataframe -->
         <div id="results"></div>
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -58,13 +70,15 @@
             // Get form data
             var formData = {
                 'title': $('#title').val(),
-                'date_option': $('#date_option').val(),
-                'from_date': $('#from_date').val() || '',
-                'to_date': $('#to_date').val() || '',
-                'for_each': $('#for_each').val(),
+                'date_option': $('input[name="date_option"]:checked').val(),
+                'from_date': $('#from-date').val() || '',
+                'to_date': $('#to-date').val() || '',
+                'for_each': $('#for-each').val(),
                 'top': $('#top').val(),
-                'sort_option': $('#sort_option').val()
+                'sort_option': $('input[name="sort_option"]:checked').val()
             };
+
+            console.log(formData)
 
             // Send form data to server using AJAX
             $.ajax({
@@ -82,13 +96,30 @@
         });
     });
 </script>
-    </div>
-
-{% endblock %}
-
-{% block scripts %}
 
 <script>
+    // Handle email form submission
+            $('#email-form').submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                // Get email input value
+                var email = $('#user-email').val();
+
+                // Send email to server using AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '/send_email',
+                    data: { email: email },
+                    success: function(response) {
+                        alert('Email sent successfully!');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', status, error);
+                        alert('Failed to send email.');
+                    }
+                });
+            });
+
     // Function to toggle date selectors
 function toggleDateSelectors() {
   var allTimeRadio = document.getElementById('all-time');
