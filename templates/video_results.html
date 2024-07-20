@@ -40,8 +40,10 @@
                         <div class="form-group">
                             <label for="top">Top:</label>
                             <select id="top" name="top">
-                                {% for i in range(1, 21) %}
-                                    <option value="{{ i }}">Top {{ i }}</option>
+                                {% for i in range(1, 101) %}
+                                    {% if i <= 10 or (15 <= i <= 50 and i % 5 == 0) or (60 <= i <= 100 and i % 10 == 0) %}
+                                        <option value="{{ i }}">Top {{ i }}</option>
+                                    {% endif %}
                                 {% endfor %}
                             </select>
                         </div>
@@ -56,10 +58,10 @@
                 <button id="search-update-button" type="submit">Search / Update</button>
             </form>
 
-        <div id="email-form" class="email-form">
-            <input type="email" id="user-email" name="email" placeholder="Enter your email" required>
-            <button type="button">Send Results</button>
-        </div>
+            <form id="email-form" class="email-form">
+                <input type="email" id="user-email" name="email" placeholder="Enter your email" required>
+                <button type="submit">Send Results</button>
+            </form>
 
         <!-- Video Results Table -->
         <!-- results will come from converted dataframe -->
