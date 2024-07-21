@@ -35,18 +35,16 @@ def channel_results():
 
 @app.route('/video_search', methods=['GET', 'POST'])
 def video_search():
-    channelId = request.args.get('channelId')
-    print(channelId)
 
     if request.method == 'POST':
-        title = request.args.get('channelTitle', 'Default Title')
-        date_option = request.args.get('date_option', 'all-time')
-        from_date = request.args.get('from_date', '')
-        to_date = request.args.get('to_date', '')
-        for_each = request.args.get('for_each', 'year')
-        top = request.args.get('top', '1')
-        sort_option = request.args.get('sort_option', 'newest')
-        views_likes = request.args.get('views_likes', 'views')
+        channel_id = request.form.get('channel_id')
+        date_option = request.form.get('date_option', 'all-time')
+        from_date = request.form.get('from_date', '')
+        to_date = request.form.get('to_date', '')
+        for_each = request.form.get('for_each', 'year')
+        top = request.form.get('top', '1')
+        sort_option = request.form.get('sort_option', 'newest')
+        views_likes = request.form.get('views_likes', 'views')
 
         # Logic to filter videos based on search options
         # For testing, using static video list from file
@@ -56,7 +54,8 @@ def video_search():
 
         return results_html
 
-    return render_template('video_results.html', title=request.args.get('channelTitle', 'Default Title'))
+    return render_template('video_results.html', title=request.args.get('channelTitle'),
+                           channelId=request.args.get('channelId'))
 
 
 @app.route('/faqs')

@@ -6,24 +6,49 @@
     <div class="results-container">
         <h1>Search Results for "{{ query }}"</h1>
         <table>
-            <thead>
-                <tr>
-                    <th>Channel Title</th>
-                    <th>Description</th>
-                    <th>Select?</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for result in results %}
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Select?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
                     <tr>
                         <td>{{ result.channelTitle }}</td>
                         <td>{{ result.channelDescription }}</td>
                         <td>
-                            <a href="{{ url_for('video_search', channel_id=result.channelTitle) }}">View Videos</a>
+                            <button class="select-channel"
+                                    data-channel-id="{{ result.channelId }}"
+                                    data-channel-title="{{ result.channelTitle }}">
+                                Select
+                            </button>
                         </td>
                     </tr>
-                {% endfor %}
-            </tbody>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">No results found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
         </table>
     </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.select-channel').click(function() {
+            var channelId = $(this).data('channel-id');
+            var channelTitle = $(this).data('channel-title');
+
+            // Redirect to video_search with channelId and channelTitle as parameters
+            window.location.href = '/video_search?channelId=' + encodeURIComponent(channelId) +
+                                    '&channelTitle=' + encodeURIComponent(channelTitle);
+        });
+    });
+</script>
 {% endblock %}

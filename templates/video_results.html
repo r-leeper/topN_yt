@@ -4,10 +4,12 @@
 
 {% block body %}
     <div class="results-container">
-        <h1>Video Results for "{{ title }}"</h1>
+        <h1>Video Results for {{ title }}</h1>
+        <h4>Channel ID: {{channelId}}</h4>
 
         <!-- Search Options Box -->
-            <form id="video-search-form" action="/search" method="GET">
+            <form id="video-search-form" action="/search" method="POST">
+                <input type="hidden" name="channelId" id="channelId" value="{{channelId}}">
                 <div class="search-options">
                     <div class="search-options-group">
                         <div class="form-group">
@@ -88,6 +90,7 @@
 
             // Get form data
             var formData = {
+                'channel_id': $('#channelId').val(),
                 'title': $('#title').val(),
                 'date_option': $('input[name="date_option"]:checked').val(),
                 'from_date': $('#from-date').val() || '',
