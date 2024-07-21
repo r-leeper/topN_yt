@@ -10,13 +10,17 @@
                 <tr>
                     <th>Channel Title</th>
                     <th>Description</th>
+                    <th>Select?</th>
                 </tr>
             </thead>
             <tbody>
                 {% for result in results %}
                     <tr>
-                        <td><a href="{{ url_for('video_search', title=result.channelTitle) }}">{{ result.channelTitle }}</a></td>
+                        <td>{{ result.channelTitle }}</td>
                         <td>{{ result.channelDescription }}</td>
+                        <td>
+                            <a href="{{ url_for('video_search', channel_id=result.channelTitle) }}">View Videos</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

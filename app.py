@@ -35,8 +35,11 @@ def channel_results():
 
 @app.route('/video_search', methods=['GET', 'POST'])
 def video_search():
+    channelId = request.args.get('channelId')
+    print(channelId)
+
     if request.method == 'POST':
-        title = request.args.get('title', 'Default Title')
+        title = request.args.get('channelTitle', 'Default Title')
         date_option = request.args.get('date_option', 'all-time')
         from_date = request.args.get('from_date', '')
         to_date = request.args.get('to_date', '')
@@ -53,7 +56,7 @@ def video_search():
 
         return results_html
 
-    return render_template('video_results.html', title=request.args.get('title', 'Default Title'))
+    return render_template('video_results.html', title=request.args.get('channelTitle', 'Default Title'))
 
 
 @app.route('/faqs')
