@@ -39,6 +39,7 @@ def video_search():
         for_each = request.args.get('for_each', 'year')
         top = request.args.get('top', '1')
         sort_option = request.args.get('sort_option', 'newest')
+        views_likes = request.args.get('views_likes', 'views')
 
         # Logic to filter videos based on search options
         # For testing, using static video list from file

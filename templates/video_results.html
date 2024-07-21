@@ -52,6 +52,11 @@
                             <input type="radio" id="newest" name="sort_option" value="newest" checked> Newest to Oldest<br>
                             <input type="radio" id="oldest" name="sort_option" value="oldest"> Oldest to Newest
                         </div>
+                        <div class="form-group">
+                            <label>Rank using:</label><br>
+                            <input type="radio" id="rank-by-views" name="views_likes" value="views" checked > Views<br>
+                            <input type="radio" id="rank-by-likes" name="views_likes" value="likes"> Likes
+                        </div>
                     </div>
                 </div>
 
@@ -88,7 +93,8 @@
                 'to_date': $('#to-date').val() || '',
                 'for_each': $('#for-each').val(),
                 'top': $('#top').val(),
-                'sort_option': $('input[name="sort_option"]:checked').val()
+                'sort_option': $('input[name="sort_option"]:checked').val(),
+                'views_likes': $('input[name="views_likes"]:checked').val(),
             };
 
             console.log(formData);
