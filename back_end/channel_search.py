@@ -12,7 +12,7 @@ api_key = os.getenv('GOOGLE_API_KEY')
 youtube = googleapiclient.discovery.build('youtube', 'v3', developerKey=api_key)
 
 
-def channel_search(channel_name):
+def youtube_channel_search(channel_name):
     """
     Retrieve the channel ID and other details for a given channel name.
 
@@ -45,6 +45,6 @@ def channel_search(channel_name):
 
 
 if __name__ == "__main__":
-    channels = channel_search("Totalbiscuit")
+    channels = youtube_channel_search("Totalbiscuit")
     for channel in channels:
         print(channel)
