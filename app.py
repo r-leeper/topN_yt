@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 import pandas as pd
 from back_end.channel_search import youtube_channel_search
+from back_end.youtube_video_populate import youtube_video_populate
+from back_end.video_search import video_search
 
 app = Flask(__name__)
 
@@ -45,6 +47,13 @@ def video_search():
         top = request.form.get('top', '1')
         sort_option = request.form.get('sort_option', 'newest')
         views_likes = request.form.get('views_likes', 'views')
+
+        # Check if dataframe is already in session
+        if 'videos_df' not in session:
+            # Get the dataframe using youtube_video_populate function
+            videos_df = youtube_video_populate()
+            # Convert dataframe to JSON and store in session
+            session['videos_df'] = videos_df.to_json()
 
         # Logic to filter videos based on search options
         # For testing, using static video list from file
