@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify, s
 import pandas as pd
 from back_end.channel_search import youtube_channel_search
 from back_end.youtube_video_populate import youtube_video_populate
-from back_end.video_search import video_search
+from back_end.video_search import topN_videos
 
 app = Flask(__name__)
 
@@ -24,20 +24,11 @@ def channel_results():
     # Get results
     results = youtube_channel_search(query)
 
-    # # For demonstration, we'll use a placeholder list of results
-    # results = [
-    #     {"title": "Example Channel 1", "description": "This is a description for Example Channel 1.", "id": "12345"},
-    #     {"title": "Example Channel 2", "description": "This is a description for Example Channel 2.", "id": "23456"},
-    #     {"title": "Example Channel 3", "description": "This is a description for Example Channel 3.", "id": "34567"},
-    #     {"title": "Example Channel 4", "description": "This is a description for Example Channel 4.", "id": "45678"},
-    #     {"title": "Example Channel 5", "description": "This is a description for Example Channel 5.", "id": "56789"},
-    # ]
     return render_template('channel_results.html', query=query, results=results)
 
 
 @app.route('/video_search', methods=['GET', 'POST'])
 def video_search():
-
     if request.method == 'POST':
         channel_id = request.form.get('channel_id')
         date_option = request.form.get('date_option', 'all-time')
@@ -49,17 +40,18 @@ def video_search():
         views_likes = request.form.get('views_likes', 'views')
 
         # Check if dataframe is already in session
-        if 'videos_df' not in session:
+        if 'all_videos_df' not in session:
             # Get the dataframe using youtube_video_populate function
-            videos_df = youtube_video_populate()
+            all_videos_df = youtube_video_populate(channel_id)
             # Convert dataframe to JSON and store in session
-            session['videos_df'] = videos_df.to_json()
+            session['all_videos_df'] = all_videos_df.to_json()
 
         # Logic to filter videos based on search options
-        # For testing, using static video list from file
-        file_path = 'mock_data/youtube_videos.csv'
-        videos_df = pd.read_csv(file_path, sep='~', usecols=['title', 'view_count'], nrows=50)
-        results_html = videos_df.to_html(escape=False, index=False)
+        all_videos_df = pd.read_json(session['all_videos_df'])
+
+        topN_df = topN_videos(all_videos_df)
+
+        results_html = topN_df.to_html(escape=False, index=False)
 
         return results_html
 
@@ -70,6 +62,7 @@ def video_search():
 @app.route('/faqs')
 def faqs():
     return render_template('faqs.html')
+
 
 @app.route('/send_email', methods=['POST'])
 def send_email():
