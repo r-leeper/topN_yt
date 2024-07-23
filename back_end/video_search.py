@@ -79,5 +79,5 @@ def topN_videos(df, from_date, to_date, for_each, top, order, views_likes):
 if __name__ == '__main__':
     # Example usage using .csv to save on API calls.
     channel_videos_df = pd.read_csv('test_data/youtube_video_populated.csv', sep='~')
-    output = topN_videos(channel_videos_df, "2015-01-01", "2020-01-01", "quarter", "3", "newest", views_likes="view_count")
+    output = topN_videos(channel_videos_df, "2015-01-01", "2020-01-01", "quarter", "3", "newest", "view_count")
     print(output)
