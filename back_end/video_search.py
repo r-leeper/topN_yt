@@ -61,11 +61,17 @@ def topN_videos(df, from_date, to_date, for_each, top, order, views_likes):
 
     # Sort the final DataFrame based on the 'order' parameter
     if order == 'newest':
-        final_df = final_df.sort_values(by='period', ascending=False)
+        final_df = final_df.sort_values(by=['period', 'rank'], ascending=[False, True])
     elif order == 'oldest':
-        final_df = final_df.sort_values(by='period', ascending=True)
+        final_df = final_df.sort_values(by=['period', 'rank'], ascending=[True, True])
     else:
         raise ValueError("Invalid value for 'order'. Choose from 'newest' or 'oldest'.")
+
+    # Use video_id to create link
+    final_df['link'] = 'https://www.youtube.com/watch?v=' + final_df.pop('video_id')
+
+    # Drop the 'period' column and rename 'period_label' to 'period'
+    final_df = final_df.drop(columns=['period']).rename(columns={'period_label': 'period'})
 
     return final_df
 
@@ -73,5 +79,5 @@ def topN_videos(df, from_date, to_date, for_each, top, order, views_likes):
 if __name__ == '__main__':
     # Example usage using .csv to save on API calls.
     channel_videos_df = pd.read_csv('test_data/youtube_video_populated.csv', sep='~')
-    output = topN_videos(channel_videos_df, "2015-01-01", "2020-01-01", "year", "50", "newest", views_likes="like_count")
+    output = topN_videos(channel_videos_df, "2015-01-01", "2020-01-01", "quarter", "3", "newest", views_likes="view_count")
     print(output)
