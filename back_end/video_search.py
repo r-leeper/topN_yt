@@ -14,6 +14,9 @@ def topN_videos(df, from_date, to_date, for_each, top, order, views_likes):
         # Filter the DataFrame by the specified date range
         df_filtered = df[(df['published_date'] >= start_date) & (df['published_date'] <= end_date)]
 
+    else:
+        df_filtered = df
+
     # Define the resampling rule and period label format based on the 'for_each' parameter
     if for_each == 'year':
         resample_rule = 'Y'
@@ -67,5 +70,5 @@ def topN_videos(df, from_date, to_date, for_each, top, order, views_likes):
 if __name__ == '__main__':
     # Example usage using .csv to save on API calls.
     channel_videos_df = pd.read_csv('test_data/youtube_video_populated.csv', sep='~')
-    output = topN_videos(channel_videos_df, "2015-01-01", "2020-01-01", "year", "5", "oldest", views_likes="views")
+    output = topN_videos(channel_videos_df, "2015-01-01", "2020-01-01", "year", "5", "oldest", views_likes="view_count")
     print(output)
