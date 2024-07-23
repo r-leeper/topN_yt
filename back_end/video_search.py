@@ -39,6 +39,9 @@ def topN_videos(df, from_date, to_date, for_each, top, order, views_likes):
     # Create a list to store the results
     results = []
 
+    # Convert top argument string to int
+    top = int(top)
+
     for period, group in df_resampled:
         top_videos = group.nlargest(top, views_likes)
         top_videos['period'] = period
@@ -70,5 +73,5 @@ def topN_videos(df, from_date, to_date, for_each, top, order, views_likes):
 if __name__ == '__main__':
     # Example usage using .csv to save on API calls.
     channel_videos_df = pd.read_csv('test_data/youtube_video_populated.csv', sep='~')
-    output = topN_videos(channel_videos_df, "2015-01-01", "2020-01-01", "year", "5", "oldest", views_likes="view_count")
+    output = topN_videos(channel_videos_df, "2015-01-01", "2020-01-01", "year", "50", "newest", views_likes="like_count")
     print(output)
