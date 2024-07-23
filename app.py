@@ -3,8 +3,10 @@ import pandas as pd
 from back_end.channel_search import youtube_channel_search
 from back_end.youtube_video_populate import youtube_video_populate
 from back_end.video_search import topN_videos
+import os
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -23,6 +25,8 @@ def channel_results():
 
     # Get results
     results = youtube_channel_search(query)
+
+    session.pop('videos_df', None)
 
     return render_template('channel_results.html', query=query, results=results)
 
@@ -49,7 +53,9 @@ def video_search():
         # Logic to filter videos based on search options
         all_videos_df = pd.read_json(session['all_videos_df'])
 
-        topN_df = topN_videos(all_videos_df)
+        topN_df = topN_videos(all_videos_df, date_option, from_date, to_date, for_each, top, sort_option, views_likes)
+
+        session['topN_df'] = topN_df.to_json()
 
         results_html = topN_df.to_html(escape=False, index=False)
 
@@ -78,6 +84,8 @@ def send_email_with_results(email):
     # This function should handle sending the email with the dataframe
     # You need to implement this function yourself
     print(f"Sending email to {email} with the results...")
+
+    # TODO Send email function.
 
 
 if __name__ == '__main__':
