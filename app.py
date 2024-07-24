@@ -3,10 +3,14 @@ import pandas as pd
 from back_end.channel_search import youtube_channel_search
 from back_end.youtube_video_populate import youtube_video_populate
 from back_end.video_search import topN_videos
+from email_user_df import send_df_as_email
+from flask_session import Session
 import os
 
 app = Flask(__name__)
+app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = os.urandom(24)
+Session(app)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -56,6 +60,7 @@ def video_search():
         topN_df = topN_videos(all_videos_df, date_option, from_date, to_date, for_each, top, sort_option, views_likes)
 
         session['topN_df'] = topN_df.to_json()
+        print("Session key set:", 'topN_df' in session)
 
         results_html = topN_df.to_html(escape=False, index=False)
 
@@ -74,8 +79,10 @@ def faqs():
 def send_email():
     email = request.form.get('email')
     if email:
+        print("Session key set from email:", 'topN_df' in session)
+        topN_df = pd.read_json(session['topN_df'])
         # Call your function to send the email with the dataframe
-        send_email_with_results(email)
+        send_df_as_email(df=topN_df, recipient=email)
         return jsonify({'message': 'Email sent successfully!'})
     return jsonify({'error': 'Email is required.'}), 400
 
