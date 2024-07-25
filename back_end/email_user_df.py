@@ -11,18 +11,28 @@ password = os.getenv('EMAIL_PASSWORD')
 sender = os.getenv('EMAIL_ADDRESS')
 
 
-def send_df_as_email(df_to_send, recipient_email):
+# Link slicing function
+def clean_link(html):
+    # Find the starting index of the URL
+    start = html.find('<a href="') + len('<a href="')
+    # Find the ending index of the URL
+    end = html.find('" target="_blank">', start)
+    # Slice and return the URL
+    return html[start:end]
+
+
+def send_df_as_email(df_to_send, recipient_email, channel_name):
     """
     Sends a DataFrame as an HTML email to the specified recipient.
     """
 
-
+    df_to_send['Link'] = df_to_send['Link'].apply(clean_link)
 
     # Convert DataFrame to HTML
     df_html = df_to_send.to_html()
 
     # Email content
-    subject = "Your TopN YouTube Search Results"
+    subject = f"Your TopN YouTube Search Results for {channel_name}"
     body = "Here are your DataFrame results:\n\n" + df_html
 
     msg = MIMEMultipart()
@@ -52,4 +62,4 @@ if __name__ == "__main__":
     }
     df = pd.DataFrame(data)
     test_email = 'leeperross@gmail.com'
-    send_df_as_email(df, test_email)
+    send_df_as_email(df, test_email,"TopN YouTube Search")

@@ -6,6 +6,7 @@ from back_end.video_search import topN_videos
 from back_end.email_user_df import send_df_as_email
 from flask_session import Session
 import os
+import shutil
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -15,6 +16,24 @@ Session(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def channel_search():
+    # Path to the flask_session directory
+    session_dir = 'flask_session'
+
+    # Check if the directory exists
+    if os.path.exists(session_dir):
+        # Iterate through each item in the directory
+        for filename in os.listdir(session_dir):
+            file_path = os.path.join(session_dir, filename)
+            try:
+                if os.path.isfile(file_path):
+                    os.remove(file_path)
+                    print(f'Deleted file: {file_path}')
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+                    print(f'Deleted directory: {file_path}')
+            except Exception as e:
+                print(f'Failed to delete {file_path}. Reason: {e}')
+
     if request.method == 'POST':
         channel_search_query = request.form['search']
         # Redirect to the results page with the query as a parameter
@@ -37,6 +56,10 @@ def channel_results():
 
 @app.route('/video_search', methods=['GET', 'POST'])
 def video_search():
+
+    if 'channel_title' not in session:
+        session['channel_title'] = request.args.get('channelTitle')
+
     if request.method == 'POST':
         channel_id = request.form.get('channel_id')
         date_option = request.form.get('date_option', 'all-time')
@@ -81,18 +104,12 @@ def send_email():
     if email:
         print("Session key set from email:", 'topN_df' in session)
         topN_df = pd.read_json(session['topN_df'])
+        channel_title = session.get('channel_title', 'Not set')
+        print(f"This is coming from the send_email function {channel_title}")
         # Call your function to send the email with the dataframe
-        send_df_as_email(df_to_send=topN_df, recipient_email=email)
+        send_df_as_email(df_to_send=topN_df, recipient_email=email, channel_name=channel_title)
         return jsonify({'message': 'Email sent successfully!'})
     return jsonify({'error': 'Email is required.'}), 400
-
-
-def send_email_with_results(email):
-    # This function should handle sending the email with the dataframe
-    # You need to implement this function yourself
-    print(f"Sending email to {email} with the results...")
-
-    # TODO Send email function.
 
 
 if __name__ == '__main__':
