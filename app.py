@@ -6,7 +6,6 @@ from back_end.video_search import topN_videos
 from back_end.email_user_df import send_df_as_email
 from flask_session import Session
 import os
-import shutil
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -17,24 +16,8 @@ Session(app)
 @app.route('/', methods=['GET', 'POST'])
 def channel_search():
     # Path to the flask_session directory
-    session_dir = 'flask_session'
-
-    # Check if the directory exists
-    if os.path.exists(session_dir):
-        # Iterate through each item in the directory
-        for filename in os.listdir(session_dir):
-            file_path = os.path.join(session_dir, filename)
-            try:
-                if os.path.isfile(file_path):
-                    os.remove(file_path)
-                    print(f'Deleted file: {file_path}')
-                elif os.path.isdir(file_path):
-                    shutil.rmtree(file_path)
-                    print(f'Deleted directory: {file_path}')
-            except Exception as e:
-                print(f'Failed to delete {file_path}. Reason: {e}')
-
     if request.method == 'POST':
+
         channel_search_query = request.form['search']
         # Redirect to the results page with the query as a parameter
         return redirect(url_for('channel_results', query=channel_search_query))
