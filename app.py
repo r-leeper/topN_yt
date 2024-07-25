@@ -3,7 +3,7 @@ import pandas as pd
 from back_end.channel_search import youtube_channel_search
 from back_end.youtube_video_populate import youtube_video_populate
 from back_end.video_search import topN_videos
-from email_user_df import send_df_as_email
+from back_end.email_user_df import send_df_as_email
 from flask_session import Session
 import os
 
@@ -82,7 +82,7 @@ def send_email():
         print("Session key set from email:", 'topN_df' in session)
         topN_df = pd.read_json(session['topN_df'])
         # Call your function to send the email with the dataframe
-        send_df_as_email(df=topN_df, recipient=email)
+        send_df_as_email(df_to_send=topN_df, recipient_email=email)
         return jsonify({'message': 'Email sent successfully!'})
     return jsonify({'error': 'Email is required.'}), 400
 
